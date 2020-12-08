@@ -47,6 +47,21 @@ const reducer = (
   action: TodoAction
 ): InitialTodoState => {
   switch (action.type) {
+    case DELTE:
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
+    case TOGGLE:
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload) {
+            todo.done = !todo.done;
+          }
+          return todo;
+        }),
+      };
   }
 
   return state;
