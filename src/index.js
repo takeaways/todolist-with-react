@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import App from "./App";
-import store from "./store";
 import { createGlobalStyle } from "styled-components";
+import App from "./app";
+import store from "./store";
 const GlobalStyle = createGlobalStyle`
   body{
     background: #e9ecef;

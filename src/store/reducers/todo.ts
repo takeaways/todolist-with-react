@@ -13,7 +13,7 @@ export const updateTodo = (updatedTodo: { text: string; id: number }) => ({
   payload: updatedTodo,
 });
 export const toggleTodo = (id: number) => ({
-  TOGGLE,
+  type: TOGGLE,
   payload: id,
 });
 
@@ -28,15 +28,27 @@ export type Todo = {
   text: string;
   done: boolean;
 };
-interface InitialTodoState {
+export interface InitialTodoState {
   todos: Todo[];
 }
 
 const initialTodoState: InitialTodoState = {
-  todos: [],
+  todos: [
+    {
+      id: 1,
+      text: "hello",
+      done: false,
+    },
+  ],
 };
 
-const reducer = (state = initialTodoState, actions: TodoAction) => {
+const reducer = (
+  state: InitialTodoState = initialTodoState,
+  action: TodoAction
+): InitialTodoState => {
+  switch (action.type) {
+  }
+
   return state;
 };
 
