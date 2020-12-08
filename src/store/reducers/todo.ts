@@ -1,4 +1,10 @@
-import { CREATE, DELTE, TOGGLE, UPDATE } from "./../actions/todo";
+import {
+  CREATE,
+  DELTE,
+  TOGGLE,
+  UPDATE,
+  TOGGLE_UPDATE,
+} from "./../actions/todo";
 
 export const createTodo = (text: string) => ({
   type: CREATE,
@@ -16,11 +22,16 @@ export const toggleTodo = (id: number) => ({
   type: TOGGLE,
   payload: id,
 });
+export const toggleUpdate = (stage: Todo | null) => ({
+  type: TOGGLE_UPDATE,
+  payload: stage,
+});
 
 export type TodoAction =
   | ReturnType<typeof createTodo>
   | ReturnType<typeof deleteTodo>
   | ReturnType<typeof toggleTodo>
+  | ReturnType<typeof toggleUpdate>
   | ReturnType<typeof updateTodo>;
 
 export type Todo = {
@@ -30,11 +41,13 @@ export type Todo = {
 };
 export interface InitialTodoState {
   nextId: number;
+  stage: Todo | null;
   todos: Todo[];
 }
 
 const initialTodoState: InitialTodoState = {
   nextId: 1,
+  stage: null,
   todos: [
     {
       id: 1,
@@ -74,6 +87,20 @@ const reducer = (
           { id: nextId, text: action.payload, done: false },
         ],
       };
+    case TOGGLE_UPDATE:
+      return {
+        ...state,
+        stage: action.payload,
+      };
+    case UPDATE:
+      const findIndex = state.todos.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      const newTodos = [...state.todos];
+      const todo = newTodos[findIndex];
+      todo.text = action.payload.text;
+      newTodos.splice(findIndex, 1, todo);
+      return { ...state, stage: null, todos: newTodos };
   }
 
   return state;

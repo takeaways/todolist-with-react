@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { MdDone, MdDelete } from "react-icons/md";
-import { deleteTodo, toggleTodo } from "../store/reducers/todo";
+import { deleteTodo, toggleTodo, toggleUpdate } from "../store/reducers/todo";
 import { CheckCircle, Remove, TodoItemBlock, Text } from "./TodoItem.style";
 
 type TodoItemProps = {
@@ -10,17 +10,21 @@ type TodoItemProps = {
   text: string;
 };
 
-function TodoItem({ id, done, text }: TodoItemProps) {
+function TodoItem(props: TodoItemProps) {
+  const { id, done, text } = props;
   const dispatch = useDispatch();
   const onToggle = () => dispatch(toggleTodo(id));
   const onRemove = () => dispatch(deleteTodo(id));
+  const onToggleUpdate = () => dispatch(toggleUpdate(props));
 
   return (
     <TodoItemBlock>
       <CheckCircle onClick={onToggle} done={done}>
         {done && <MdDone />}
       </CheckCircle>
-      <Text done={done}>{text}</Text>
+      <Text done={done} onClick={onToggleUpdate}>
+        {text}
+      </Text>
       <Remove onClick={onRemove}>
         <MdDelete />
       </Remove>

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { createTodo } from "../store/reducers/todo";
-import { useTodoDispatch, useTodoNextId } from "../TodoContext";
+import useClearStage from "../hooks/useClearStage";
+import useToggleUpdate from "../hooks/useToggleUpdate";
+import { createTodo, updateTodo } from "../store/reducers/todo";
+
 import {
   CircleButton,
   Input,
@@ -12,19 +14,37 @@ import {
 
 function TodoCreate() {
   const dispatch = useDispatch();
+  const stage = useToggleUpdate();
+  const clearStage = useClearStage();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const onToggle = () => setOpen(!open);
+
+  const onToggle = () => {
+    setOpen(!open);
+    clearStage();
+  };
+
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) =>
     setValue(e.target.value);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setValue("");
-    dispatch(createTodo(value));
+    if (stage) {
+      dispatch(updateTodo({ text: value, id: stage.id }));
+    } else {
+      dispatch(createTodo(value));
+    }
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (stage && stage.id) {
+      setOpen(true);
+      setValue(stage.text);
+    }
+  }, [stage && stage.id]);
 
   return (
     <>
