@@ -47,10 +47,12 @@ export const TodoItemBlock = styled.div`
 export const Text = styled.div<{ done: boolean }>`
   flex: 1;
   font-size: 21px;
-  color: #495057;
-  ${(props) =>
-    props.done &&
-    css`
-      color: #ced4da;
-    `}
+  color: ${(props) => (props.done ? "red" : "blue")};
+
+  display: flex;
+  flex-direction: column;
+
+  span:nth-child(2) {
+    font-size: 5px;
+  }
 `;

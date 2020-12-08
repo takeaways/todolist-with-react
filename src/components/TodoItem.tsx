@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { MdDone, MdDelete } from "react-icons/md";
 import { deleteTodo, toggleTodo, toggleUpdate } from "../store/reducers/todo";
 import { CheckCircle, Remove, TodoItemBlock, Text } from "./TodoItem.style";
+import moment from "moment";
+import useClearStage from "../hooks/useClearStage";
 
 type TodoItemProps = {
   id: number;
   done: boolean;
   text: string;
+  at: Date;
 };
 
-function TodoItem(props: TodoItemProps) {
-  const { id, done, text } = props;
+function TodoItem({ todo }: { todo: TodoItemProps }) {
+  const { id, done, text, at } = todo;
   const dispatch = useDispatch();
+  const clearStage = useClearStage();
   const onToggle = () => dispatch(toggleTodo(id));
-  const onRemove = () => dispatch(deleteTodo(id));
-  const onToggleUpdate = () => dispatch(toggleUpdate(props));
+  const onRemove = () => {
+    dispatch(deleteTodo(id));
+    clearStage();
+  };
+  const onToggleUpdate = () => dispatch(toggleUpdate(todo));
+
+  console.log("1--->", todo);
 
   return (
     <TodoItemBlock>
@@ -23,7 +32,8 @@ function TodoItem(props: TodoItemProps) {
         {done && <MdDone />}
       </CheckCircle>
       <Text done={done} onClick={onToggleUpdate}>
-        {text}
+        <span>{text}</span>
+        <span>{moment(at).fromNow()}</span>
       </Text>
       <Remove onClick={onRemove}>
         <MdDelete />

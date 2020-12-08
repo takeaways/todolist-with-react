@@ -21,8 +21,8 @@ function TodoCreate() {
   const [value, setValue] = useState("");
 
   const onToggle = () => {
-    setOpen(!open);
     clearStage();
+    setOpen(!open);
   };
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -43,6 +43,8 @@ function TodoCreate() {
     if (stage && stage.id) {
       setOpen(true);
       setValue(stage.text);
+    } else {
+      setValue("");
     }
   }, [stage && stage.id]);
 
