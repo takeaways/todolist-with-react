@@ -36,6 +36,8 @@ const initialTodoState: InitialTodoState = {
   todos: [],
 };
 
-const reducer = (state = initialTodoState, actions: TodoAction) => {};
+const reducer = (state = initialTodoState, actions: TodoAction) => {
+  return state;
+};
 
 export default reducer;
