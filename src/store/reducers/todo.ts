@@ -29,10 +29,12 @@ export type Todo = {
   done: boolean;
 };
 export interface InitialTodoState {
+  nextId: number;
   todos: Todo[];
 }
 
 const initialTodoState: InitialTodoState = {
+  nextId: 1,
   todos: [
     {
       id: 1,
@@ -61,6 +63,16 @@ const reducer = (
           }
           return todo;
         }),
+      };
+    case CREATE:
+      const nextId = state.nextId + 1;
+      return {
+        ...state,
+        nextId,
+        todos: [
+          ...state.todos,
+          { id: nextId, text: action.payload, done: false },
+        ],
       };
   }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import useLeftTodos from "../hooks/useLeftTodos";
 import { useTodoState } from "../TodoContext";
 
 const TodoHeadBlock = styled.div`
@@ -28,8 +29,7 @@ const TodoHeadBlock = styled.div`
 `;
 
 function TodoHead() {
-  const todos = useTodoState();
-  const undoneTasks = todos.filter((todo) => !todo.done);
+  const left = useLeftTodos();
 
   const today = new Date();
   const dateString = today.toLocaleDateString("ko-KR", {
@@ -45,9 +45,7 @@ function TodoHead() {
     <TodoHeadBlock>
       <h1>{dateString}</h1>
       <div className="day">{dayName}</div>
-      <div className="tasks-left">
-        할 일 {undoneTasks && undoneTasks.length}개 남음
-      </div>
+      <div className="tasks-left">할 일 {left}개 남음</div>
     </TodoHeadBlock>
   );
 }
